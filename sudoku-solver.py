@@ -83,6 +83,3 @@ def printBoard(board):
                 print(board[i][j])
             else:
                 print(board[i][j], end="")
-
-solve(board)
-printBoard(board)
