@@ -1,15 +1,41 @@
 #Initial state of board in form of a list of list of ints    
 board = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 9],
-    [0, 0, 0, 0, 0, 7, 0, 1, 0],
-    [7, 6, 0, 9, 0, 0, 3, 0, 8],
-    [0, 0, 1, 6, 0, 0, 4, 3, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 6],
-    [0, 5, 0, 0, 7, 0, 0, 8, 0],
-    [0, 0, 3, 0, 0, 1, 0, 2, 0],
-    [9, 1, 0, 0, 0, 3, 0, 0, 0],
-    [0, 0, 0, 0, 0, 5, 1, 9, 0]
+    [7, 0, 8, 0, 6, 0, 0, 2, 1],
+    [0, 0, 0, 2, 0, 0, 4, 0, 0],
+    [0, 0, 1, 0, 0, 0, 8, 0, 0],
+    [0, 0, 0, 0, 0, 0, 2, 0, 0],
+    [0, 3, 0, 0, 7, 0, 0, 0, 0],
+    [0, 0, 4, 6, 0, 0, 0, 5, 9],
+    [0, 0, 0, 0, 0, 0, 0, 0, 8],
+    [4, 0, 0, 0, 0, 9, 0, 0, 0],
+    [0, 0, 9, 5, 0, 0, 0, 1, 6]
 ]
+
+#Solves board through testing numbers and backtracking until
+#the board is completely filled.
+#Takes board as input and modifies the board
+def solve(board):
+    find = findEmpty(board)
+    #Base case
+    #Solution must be found if there is no more empty spots
+    if not find:
+        return True
+    else:
+        row, column = find
+    
+    for i in range(1, 10):
+        #Assume that i is the solution for position(row, column)
+        if check(board, (row, column), i):
+            board[row][column] = i
+
+            #Recursion: move onto next cell
+            if solve(board):
+                return True
+            
+            #Assumption was incorrect, backtrack and repeat
+            board[row][column] = 0
+    
+    return False
 
 #Checks if placing num on board at position(row, column) is legal
 #Returns bool
@@ -41,7 +67,7 @@ def findEmpty(board):
         for j in range(len(board[0])):
             if board[i][j] == 0:
                 return (i, j)
-    return
+    return None
 
 #Prints out the sudoku board, taking a board as input
 def printBoard(board):
@@ -57,3 +83,6 @@ def printBoard(board):
                 print(board[i][j])
             else:
                 print(board[i][j], end="")
+
+solve(board)
+printBoard(board)
